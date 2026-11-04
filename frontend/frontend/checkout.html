@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | LicenseFlow</title>
+<link rel="stylesheet" href="./style.css">
+
+<style>
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top right,rgba(99,102,241,.16),transparent 35%),#080b14;
+    color:#fff;
+}
+.checkout-page{max-width:1100px;margin:auto;padding:50px 25px}
+.checkout-header{margin-bottom:35px}
+.checkout-header h1{font-size:36px;margin-bottom:8px}
+.checkout-header p{color:#9ca3af}
+.checkout-grid{display:grid;grid-template-columns:1fr 420px;gap:25px}
+.checkout-card{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:30px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.checkout-card h2{margin-bottom:25px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;margin-bottom:8px;color:#d1d5db;font-size:14px}
+.form-group input,.form-group select{width:100%;padding:14px 15px;border-radius:10px;border:1px solid #374151;background:#0f172a;color:white;outline:none;box-sizing:border-box}
+.form-group input:focus,.form-group select:focus{border-color:#6366f1}
+.plan-name{font-size:26px;font-weight:700;margin-bottom:5px}
+.plan-description{color:#9ca3af;margin-bottom:25px}
+.price-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.price-row.total{border-bottom:none;margin-top:10px;font-size:20px;font-weight:700}
+.checkout-btn{display:block;width:100%;margin-top:25px;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.checkout-btn:hover{transform:translateY(-2px)}
+.secure-box{margin-top:18px;text-align:center;color:#9ca3af;font-size:13px}
+.back-btn{display:inline-block;margin-bottom:20px;color:#a5b4fc;cursor:pointer}
+@media(max-width:800px){.checkout-grid{grid-template-columns:1fr}}
+</style>
+</head>
+
+
+<body>
+<div class="checkout-page">
+
+    <div class="back-btn" onclick="window.location.href='index.html'">
+        ← Back to LicenseFlow
+    </div>
+
+    <div class="checkout-header">
+        <h1>Complete your purchase</h1>
+        <p>Choose your billing cycle and complete your subscription.</p>
+    </div>
+
+    <div class="checkout-grid">
+
+        <div class="checkout-card">
+            <h2>Customer Details</h2>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="customerName" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="customerEmail" placeholder="you@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>Billing Cycle</label>
+                <select id="billingCycle" onchange="updateCheckoutPrice()">
+                    <option value="monthly">Monthly</option>
+                    <option value="annual">Annual — Save 15%</option>
+                </select>
+            </div>
+
+            <h2 style="margin-top:35px;">Payment Method</h2>
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select id="paymentMethod">
+                    <option value="upi">UPI</option>
+                    <option value="card">Credit / Debit Card</option>
+                    <option value="netbanking">Net Banking</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="checkout-card">
+            <h2>Order Summary</h2>
+
+            <div class="plan-name" id="checkoutPlan">Medium</div>
+            <div class="plan-description">Professional SaaS subscription</div>
+
+            <div class="price-row">
+                <span>Subscription</span>
+                <span id="basePrice">₹999.00</span>
+            </div>
+
+            <div class="price-row">
+                <span>GST</span>
+                <span id="gstAmount">₹179.82</span>
+            </div>
+
+            <div class="price-row total">
+                <span>Total</span>
+                <span id="totalPrice">₹1,178.82</span>
+            </div>
+
+            <button type="button" class="checkout-btn" id="payButton">
+                Pay &amp; Activate License
+            </button>
+
+            <div class="secure-box">
+                🔒 Demo payment · License generated automatically
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+(function () {
+
+    const selectedPlan =
+        localStorage.getItem("selected_plan") || "Medium";
+
+    const selectedPrice =
+        Number(localStorage.getItem("selected_price")) || 999;
+
+    const planEl = document.getElementById("checkoutPlan");
+    const billingEl = document.getElementById("billingCycle");
+    const priceEl = document.getElementById("basePrice");
+    const gstEl = document.getElementById("gstAmount");
+    const totalEl = document.getElementById("totalPrice");
+    const payButton = document.getElementById("payButton");
+
+    planEl.textContent = selectedPlan;
+
+    function calculatePrice() {
+        let price = selectedPrice;
+
+        if (billingEl.value === "annual") {
+            price = selectedPrice * 12 * 0.85;
+        }
+
+        const gst = price * 0.18;
+        const total = price + gst;
+
+        priceEl.textContent = "₹" + price.toFixed(2);
+        gstEl.textContent = "₹" + gst.toFixed(2);
+        totalEl.textContent = "₹" + total.toFixed(2);
+
+        return { price, gst, total };
+    }
+
+    billingEl.addEventListener("change", calculatePrice);
+
+    function makeLicenseKey() {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        function part() {
+            let value = "";
+            for (let i = 0; i < 4; i++) {
+                value += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return value;
+        }
+
+        return "MSLM-" + part() + "-" + part() + "-" + part() + "-" + part() + "-" + part();
+    }
+
+    payButton.addEventListener("click", function () {
+
+        const name =
+            document.getElementById("customerName").value.trim();
+
+        const email =
+            document.getElementById("customerEmail").value.trim();
+
+        if (!name || !email) {
+            alert("Please enter your name and email.");
+            return;
+        }
+
+        const billing = billingEl.value;
+        const paymentMethod =
+            document.getElementById("paymentMethod").value;
+
+        const amounts = calculatePrice();
+
+        const expiryDate = new Date();
+
+        if (billing === "annual") {
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+        } else {
+            expiryDate.setMonth(expiryDate.getMonth() + 1);
+        }
+
+        const expiry = expiryDate.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+        const licenseKey = makeLicenseKey();
+
+        let state;
+
+        try {
+            state = JSON.parse(
+                localStorage.getItem("licenseflow_state")
+            );
+        } catch (e) {
+            state = null;
+        }
+
+        if (!state) {
+            state = {
+                customer: {},
+                subscription: {},
+                license: {},
+                usage: {
+                    projects: 0,
+                    tasks: 0,
+                    devices: 0,
+                    team: 0
+                },
+                revenue: 0,
+                transactions: []
+            };
+        }
+
+        if (!Array.isArray(state.transactions)) {
+            state.transactions = [];
+        }
+
+        state.customer.name = name;
+        state.customer.email = email;
+
+        state.subscription = {
+            plan: selectedPlan,
+            price: selectedPrice,
+            status: "ACTIVE",
+            billing: billing === "annual" ? "Annual" : "Monthly",
+            expiry: expiry
+        };
+
+        state.license = {
+            key: licenseKey,
+            status: "ACTIVE",
+            plan: selectedPlan,
+            expiry: expiry
+        };
+
+        state.transactions.unshift({
+            id: "TXN-" + Date.now(),
+            amount: amounts.total,
+            plan: selectedPlan,
+            status: "PAID",
+            method: paymentMethod.toUpperCase(),
+            date: new Date().toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            })
+        });
+
+        localStorage.setItem(
+            "licenseflow_state",
+            JSON.stringify(state)
+        );
+
+        localStorage.removeItem("selected_plan");
+        localStorage.removeItem("selected_price");
+
+        alert(
+            "✓ PAYMENT SUCCESSFUL\n\n" +
+            "Plan: " + selectedPlan +
+            "\nAmount: ₹" + amounts.total.toFixed(2) +
+            "\n\nLicense Generated:\n" + licenseKey
+        );
+localStorage.setItem("licenseflow_logged_in", "true");
+localStorage.setItem("licenseflow_role", "customer");
+
+        window.location.href = "customer.html";
+    });
+
+    calculatePrice();
+
+})();
+</script>
+
+</body>
+</html>

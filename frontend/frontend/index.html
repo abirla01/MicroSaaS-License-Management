@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LicenseFlow — SaaS License Management</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        <div class="logo-mark">LF</div>
+        <span>License<span>Flow</span></span>
+    </div>
+
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Plans</a>
+        <a href="#security">Security</a>
+    </nav>
+
+    <div class="nav-actions">
+        <button class="btn btn-ghost" onclick="openLogin()">Login</button>
+        <button class="btn btn-primary" onclick="openLogin()">Get Started</button>
+    </div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            <span class="pulse"></span>
+            Modern SaaS License Management
+        </div>
+
+        <h1>
+            Power your SaaS.<br>
+            <span>Manage every license.</span>
+        </h1>
+
+        <p>
+            One intelligent platform to manage subscriptions,
+            payments, software licenses, renewals and recurring revenue.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="btn btn-primary btn-large" onclick="openLogin()">
+                Start Building →
+            </button>
+
+            <button class="btn btn-outline btn-large" onclick="scrollToPlans()">
+                Explore Plans
+            </button>
+
+        </div>
+
+        <div class="hero-trust">
+            <div>✓ Secure payments</div>
+            <div>✓ Automated licensing</div>
+            <div>✓ Real-time analytics</div>
+        </div>
+
+    </div>
+
+
+    <!-- Dashboard Preview -->
+
+    <div class="dashboard-preview">
+
+        <div class="window-top">
+            <div class="window-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <span class="preview-title">LicenseFlow Dashboard</span>
+        </div>
+
+        <div class="preview-body">
+
+            <div class="preview-sidebar">
+
+                <div class="mini-logo">LF</div>
+
+                <div class="mini-nav active">▦</div>
+                <div class="mini-nav">◈</div>
+                <div class="mini-nav">♢</div>
+                <div class="mini-nav">◉</div>
+
+            </div>
+
+            <div class="preview-main">
+
+                <div class="preview-header">
+                    <div>
+                        <small>Overview</small>
+                        <h3>Good morning, Admin</h3>
+                    </div>
+
+                    <div class="avatar">A</div>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <small>Monthly Revenue</small>
+                        <strong>₹1,84,500</strong>
+                        <span class="positive">↑ 18.4%</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <small>Active Licenses</small>
+                        <strong>417</strong>
+                        <span class="positive">↑ 12.8%</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <small>Subscriptions</small>
+                        <strong>428</strong>
+                        <span class="positive">↑ 8.2%</span>
+                    </div>
+
+                </div>
+
+                <div class="chart-card">
+
+                    <div class="chart-title">
+                        <span>Revenue Overview</span>
+                        <span class="chart-period">Last 30 days ▾</span>
+                    </div>
+
+                    <div class="chart">
+                        <div class="chart-line"></div>
+
+                        <div class="chart-point p1"></div>
+                        <div class="chart-point p2"></div>
+                        <div class="chart-point p3"></div>
+                        <div class="chart-point p4"></div>
+                        <div class="chart-point p5"></div>
+                        <div class="chart-point p6"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats-strip">
+
+    <div>
+        <strong>10K+</strong>
+        <span>Licenses Managed</span>
+    </div>
+
+    <div>
+        <strong>₹2.4Cr+</strong>
+        <span>Revenue Processed</span>
+    </div>
+
+    <div>
+        <strong>99.9%</strong>
+        <span>Platform Reliability</span>
+    </div>
+
+    <div>
+        <strong>24/7</strong>
+        <span>License Validation</span>
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section" id="features">
+
+    <div class="section-heading">
+
+        <div class="badge">POWERFUL FEATURES</div>
+
+        <h2>Everything your SaaS needs.</h2>
+
+        <p>
+            Manage the complete subscription lifecycle from one intelligent platform.
+        </p>
+
+    </div>
+
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon blue">◈</div>
+
+            <h3>Subscription Management</h3>
+
+            <p>
+                Create plans, manage subscriptions and handle renewals
+                from one centralized platform.
+            </p>
+
+            <span class="feature-link">Explore subscriptions →</span>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon purple">◇</div>
+
+            <h3>License Management</h3>
+
+            <p>
+                Generate unique cryptographic-style license keys and
+                control their entire lifecycle.
+            </p>
+
+            <span class="feature-link">Manage licenses →</span>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon green">₹</div>
+
+            <h3>Secure Payments</h3>
+
+            <p>
+                Process subscriptions through Razorpay and automatically
+                update payment and subscription status.
+            </p>
+
+            <span class="feature-link">View payments →</span>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon orange">↻</div>
+
+            <h3>Automated Renewals</h3>
+
+            <p>
+                Keep customers active with seamless subscription renewal
+                and license extension workflows.
+            </p>
+
+            <span class="feature-link">Manage renewals →</span>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon pink">▤</div>
+
+            <h3>Invoices</h3>
+
+            <p>
+                Maintain professional transaction history and generate
+                downloadable invoices.
+            </p>
+
+            <span class="feature-link">View invoices →</span>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon cyan">⌁</div>
+
+            <h3>Revenue Analytics</h3>
+
+            <p>
+                Track MRR, revenue, subscriptions and license activity
+                through a powerful owner dashboard.
+            </p>
+
+            <span class="feature-link">View analytics →</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="section dark-section" id="how">
+
+    <div class="section-heading">
+
+        <div class="badge">HOW IT WORKS</div>
+
+        <h2>From payment to license in seconds.</h2>
+
+        <p>
+            LicenseFlow connects every part of your SaaS subscription lifecycle.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+            <div class="step-number">01</div>
+            <h3>Choose a plan</h3>
+            <p>Customer selects the subscription that fits their needs.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">02</div>
+            <h3>Make payment</h3>
+            <p>Secure payment is processed through Razorpay.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">03</div>
+            <h3>License generated</h3>
+            <p>A unique software license is automatically created.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">04</div>
+            <h3>Access software</h3>
+            <p>The license allows access to the connected SaaS product.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">05</div>
+            <h3>Renew & continue</h3>
+            <p>Customers renew before expiry and continue using the software.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRICING ================= -->
+
+<section class="section" id="pricing">
+
+    <div class="section-heading">
+
+        <div class="badge">PRICING</div>
+
+        <h2>Plans built for every stage.</h2>
+
+        <p>
+            Start small and scale as your software business grows.
+        </p>
+
+    </div>
+
+
+    <div class="pricing-grid">
+
+
+        <!-- Emerald -->
+
+        <div class="pricing-card">
+
+            <div class="plan-name">EMERALD</div>
+
+            <h3>₹499<span>/month</span></h3>
+
+            <p>For individuals getting started.</p>
+
+            <div class="plan-line"></div>
+
+            <ul>
+                <li>✓ 1 user</li>
+                <li>✓ 1 device</li>
+                <li>✓ 5 projects</li>
+                <li>✓ 50 tasks/project</li>
+                <li>✓ Basic analytics</li>
+                <li>✓ Email support</li>
+            </ul>
+
+            <button class="btn btn-outline btn-block" onclick="selectPlan('Emerald',499)">
+                Choose Emerald
+            </button>
+
+        </div>
+
+
+        <!-- Medium -->
+
+        <div class="pricing-card popular">
+
+            <div class="popular-label">MOST POPULAR</div>
+
+            <div class="plan-name">MEDIUM</div>
+
+            <h3>₹999<span>/month</span></h3>
+
+            <p>For growing teams and businesses.</p>
+
+            <div class="plan-line"></div>
+
+            <ul>
+                <li>✓ Up to 5 users</li>
+                <li>✓ Up to 5 devices</li>
+                <li>✓ 25 projects</li>
+                <li>✓ 500 tasks/project</li>
+                <li>✓ Advanced analytics</li>
+                <li>✓ Priority support</li>
+            </ul>
+
+            <button class="btn btn-primary btn-block" onclick="selectPlan('Medium',999)">
+                Choose Medium
+            </button>
+
+        </div>
+
+
+        <!-- Diamond -->
+
+        <div class="pricing-card">
+
+            <div class="plan-name">DIAMOND</div>
+
+            <h3>₹1,999<span>/month</span></h3>
+
+            <p>For teams that need unlimited scale.</p>
+
+            <div class="plan-line"></div>
+
+            <ul>
+                <li>✓ Up to 15 users</li>
+                <li>✓ Up to 15 devices</li>
+                <li>✓ Unlimited projects</li>
+                <li>✓ Unlimited tasks</li>
+                <li>✓ Advanced analytics</li>
+                <li>✓ Premium support</li>
+            </ul>
+
+            <button class="btn btn-outline btn-block" onclick="selectPlan('Diamond',1999)">
+                Choose Diamond
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SECURITY ================= -->
+
+<section class="security" id="security">
+
+    <div class="security-content">
+
+        <div class="badge">SECURITY FIRST</div>
+
+        <h2>Your software.<br><span>Your rules.</span></h2>
+
+        <p>
+            LicenseFlow keeps subscription access controlled through
+            secure authentication, role-based access and license validation.
+        </p>
+
+        <div class="security-items">
+
+            <div>✓ Password hashing</div>
+            <div>✓ Role-based access control</div>
+            <div>✓ Secure payment processing</div>
+            <div>✓ Customer data isolation</div>
+            <div>✓ License validation API</div>
+            <div>✓ HTTPS-ready architecture</div>
+
+        </div>
+
+    </div>
+
+    <div class="security-visual">
+
+        <div class="security-card">
+
+            <div class="shield">✓</div>
+
+            <h3>License Verified</h3>
+
+            <p>Your subscription is active.</p>
+
+            <div class="verified-key">
+                MSLM-8K4P-X92Q-7T3A
+            </div>
+
+            <span class="verified">● ACTIVE</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+    <div class="badge">READY TO START?</div>
+
+    <h2>Build a smarter SaaS business.</h2>
+
+    <p>
+        Manage subscriptions, licenses and revenue from one platform.
+    </p>
+
+    <button class="btn btn-primary btn-large" onclick="openLogin()">
+        Get Started →
+    </button>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        <div class="logo-mark">LF</div>
+        LicenseFlow
+    </div>
+
+    <p>Subscription & License Management Platform</p>
+
+    <div class="footer-bottom">
+        © 2026 LicenseFlow. Built for modern SaaS businesses.
+    </div>
+
+</footer>
+
+
+<!-- ================= LOGIN MODAL ================= -->
+
+<div class="modal-overlay" id="loginModal">
+
+    <div class="modal">
+
+        <button class="modal-close" onclick="closeLogin()">×</button>
+
+        <div class="logo modal-logo">
+            <div class="logo-mark">LF</div>
+            LicenseFlow
+        </div>
+
+        <h2>Welcome back</h2>
+
+        <p>Choose how you want to enter LicenseFlow.</p>
+
+       <div id="portalSelection">
+
+    <button class="login-option" onclick="showLoginForm('customer')">
+        <div class="option-icon blue">◉</div>
+        <div>
+            <strong>Customer Portal</strong>
+            <small>Manage your subscription & license</small>
+        </div>
+        <span>→</span>
+    </button>
+
+    <button class="login-option" onclick="showLoginForm('owner')">
+        <div class="option-icon purple">◆</div>
+        <div>
+            <strong>Owner / Admin</strong>
+            <small>Manage your SaaS business</small>
+        </div>
+        <span>→</span>
+    </button>
+
+</div>
+
+<div id="credentialForm" style="display:none;">
+
+    <p id="selectedPortal" style="margin-bottom:20px;">
+        Sign in to your account
+    </p>
+
+    <form id="loginForm">
+
+        <div class="form-group">
+            <label for="loginUsername">Username or Email</label>
+
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Enter username or email"
+                autocomplete="username"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="loginPassword">Password</label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+        </div>
+
+        <p id="loginError"
+           style="display:none;color:#ff6b6b;margin-bottom:12px;">
+        </p>
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            id="loginSubmitBtn"
+            style="width:100%;">
+            Sign In
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="backToPortalSelection()"
+            style="width:100%;margin-top:10px;">
+            ← Back
+        </button>
+
+    </form>
+
+</div>
+
+    </div>
+
+</div>
+
+
+<script src="./api.js"></script>
+<script src="./app.js"></script>
+
+</body>
+</html>

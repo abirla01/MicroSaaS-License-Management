@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LicenseFlow — Customer Dashboard</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        /* CUSTOMER DASHBOARD */
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 245px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 25px 16px;
+            border-right: 1px solid var(--border);
+            background: rgba(7,10,18,.95);
+            z-index: 20;
+        }
+
+        .sidebar-logo {
+            padding: 0 12px 30px;
+        }
+
+        .side-section {
+            margin: 25px 10px 10px;
+            color: #596174;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .side-link {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 13px;
+            margin: 4px 0;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #8991a3;
+            text-align: left;
+            font-size: .82rem;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .side-link:hover,
+        .side-link.active {
+            color: white;
+            background: rgba(88,101,242,.13);
+        }
+
+        .side-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .main {
+            width: calc(100% - 245px);
+            margin-left: 245px;
+            padding: 30px 40px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+
+        .topbar h1 {
+            font-size: 1.65rem;
+            letter-spacing: -.04em;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-large {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg,var(--blue),var(--purple));
+            font-weight: 700;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: .78rem;
+        }
+
+        .profile-info span {
+            color: var(--muted);
+            font-size: .65rem;
+        }
+
+        /* STATUS */
+
+        .subscription-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 28px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(37,214,149,.18);
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 80% 50%,rgba(37,214,149,.09),transparent 40%),
+                rgba(255,255,255,.018);
+        }
+
+        .plan-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .plan-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: rgba(88,101,242,.15);
+            color: #8b93ff;
+        }
+
+        .plan-info small {
+            color: var(--muted);
+            font-size: .68rem;
+        }
+
+        .plan-info h2 {
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        .active-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 3px 7px;
+            border-radius: 20px;
+            background: rgba(37,214,149,.1);
+            color: var(--green);
+            font-size: .58rem;
+            font-weight: 700;
+        }
+
+        /* GRID */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .dash-card {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.018);
+        }
+
+        .dash-card small {
+            color: var(--muted);
+            font-size: .68rem;
+        }
+
+        .dash-card h3 {
+            font-size: 1.5rem;
+            margin-top: 8px;
+        }
+
+        .usage {
+            height: 5px;
+            margin-top: 13px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #1b2130;
+        }
+
+        .usage span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg,var(--blue),var(--purple));
+        }
+
+        .usage-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 7px;
+            color: #687184;
+            font-size: .6rem;
+        }
+
+        /* CONTENT */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.35fr .65fr;
+            gap: 18px;
+        }
+
+        .panel {
+            padding: 25px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255,255,255,.018);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .panel-header h3 {
+            font-size: .95rem;
+        }
+
+        .panel-header button {
+            border: 0;
+            background: none;
+            color: #818aff;
+            font-size: .7rem;
+            cursor: pointer;
+        }
+
+        /* LICENSE */
+
+        .license-box {
+            padding: 22px;
+            border-radius: 12px;
+            background:
+                linear-gradient(135deg,rgba(88,101,242,.12),rgba(139,92,246,.06)),
+                #0b0f1a;
+            border: 1px solid rgba(88,101,242,.15);
+        }
+
+        .license-label {
+            color: var(--muted);
+            font-size: .65rem;
+        }
+
+        .license-key {
+            margin: 10px 0 18px;
+            color: white;
+            font-family: monospace;
+            font-size: 1rem;
+            letter-spacing: .08em;
+        }
+
+        .license-meta {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+        }
+
+        .license-meta div {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.03);
+        }
+
+        .license-meta small {
+            display: block;
+            color: #687184;
+            font-size: .58rem;
+        }
+
+        .license-meta strong {
+            font-size: .7rem;
+        }
+
+        /* PAYMENTS */
+
+        .payment-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .payment-row:last-child {
+            border: 0;
+        }
+
+        .payment-name {
+            font-size: .73rem;
+        }
+
+        .payment-date {
+            color: #687184;
+            font-size: .6rem;
+        }
+
+        .payment-amount {
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        .paid {
+            color: var(--green);
+            font-size: .58rem;
+        }
+
+        /* TASKFLOW */
+
+        .taskflow-card {
+            margin-top: 18px;
+            padding: 22px;
+            border: 1px solid rgba(88,101,242,.2);
+            border-radius: 15px;
+            background:
+                radial-gradient(circle at 100% 0,rgba(88,101,242,.12),transparent 50%),
+                rgba(255,255,255,.018);
+        }
+
+        .taskflow-card h3 {
+            font-size: 1rem;
+        }
+
+        .taskflow-card p {
+            color: var(--muted);
+            font-size: .72rem;
+            margin: 5px 0 17px;
+        }
+
+        @media(max-width:1000px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar .logo span,
+            .side-link span:not(.side-icon),
+            .side-section,
+            .sidebar-logo {
+                display: none;
+            }
+
+            .sidebar-logo {
+                padding: 0 5px 25px;
+            }
+
+            .main {
+                width: calc(100% - 70px);
+                margin-left: 70px;
+                padding: 25px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+            .main {
+                padding: 20px 15px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .subscription-banner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .license-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar h1 {
+                font-size: 1.3rem;
+            }
+
+            .profile-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo">
+                <div class="logo-mark">LF</div>
+                <span>License<span>Flow</span></span>
+            </div>
+        </div>
+
+        <div class="side-section">WORKSPACE</div>
+
+        <button class="side-link active">
+            <span class="side-icon">▦</span>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="side-link" onclick="showMessage('My Subscription')">
+            <span class="side-icon">◈</span>
+            <span>My Subscription</span>
+        </button>
+
+        <button class="side-link" onclick="showLicense()">
+            <span class="side-icon">◇</span>
+            <span>My License</span>
+        </button>
+
+        <button class="side-link" onclick="openTaskFlow()">
+            <span class="side-icon">⌁</span>
+            <span>TaskFlow</span>
+        </button>
+
+        <div class="side-section">BILLING</div>
+
+        <button class="side-link" onclick="showMessage('Payments')">
+            <span class="side-icon">₹</span>
+            <span>Payments</span>
+        </button>
+
+        <button class="side-link" onclick="showMessage('Invoices')">
+            <span class="side-icon">▤</span>
+            <span>Invoices</span>
+        </button>
+
+        <button class="side-link" onclick="showMessage('Available Plans')">
+            <span class="side-icon">◆</span>
+            <span>Plans</span>
+        </button>
+
+        <div class="side-section">ACCOUNT</div>
+
+        <button class="side-link" onclick="showMessage('Profile')">
+            <span class="side-icon">●</span>
+            <span>Profile</span>
+        </button>
+
+        <button class="side-link" onclick="logout()">
+            <span class="side-icon">↪</span>
+            <span>Logout</span>
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Welcome back, Aditya 👋</h1>
+                <p>Here's what's happening with your subscription.</p>
+            </div>
+
+            <div class="profile">
+
+                <div class="profile-info">
+                    <strong>Aditya Birla</strong>
+                    <span>Customer</span>
+                </div>
+
+                <div class="avatar-large">A</div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUBSCRIPTION -->
+
+        <div class="subscription-banner">
+
+            <div class="plan-info">
+
+                <div class="plan-icon">◆</div>
+
+                <div>
+                    <small>CURRENT PLAN</small>
+                    <h2>
+                        Medium
+                        <span class="active-badge">● ACTIVE</span>
+                    </h2>
+                </div>
+
+            </div>
+
+            <div>
+                <small style="color:var(--muted);font-size:.65rem;">
+                    NEXT BILLING DATE
+                </small>
+                <strong style="display:block;margin-top:4px;">
+                    12 Oct 2026
+                </strong>
+            </div>
+
+            <button class="btn btn-primary" onclick="renewPlan()">
+                Renew Subscription
+            </button>
+
+        </div>
+
+
+        <!-- USAGE -->
+
+        <div class="dashboard-grid">
+
+            <div class="dash-card">
+                <small>PROJECTS</small>
+                <h3>12</h3>
+
+                <div class="usage">
+                    <span style="width:48%"></span>
+                </div>
+
+                <div class="usage-text">
+                    <span>12 used</span>
+                    <span>25 limit</span>
+                </div>
+            </div>
+
+
+            <div class="dash-card">
+                <small>TASKS</small>
+                <h3>184</h3>
+
+                <div class="usage">
+                    <span style="width:37%"></span>
+                </div>
+
+                <div class="usage-text">
+                    <span>184 used</span>
+                    <span>500 limit</span>
+                </div>
+            </div>
+
+
+            <div class="dash-card">
+                <small>DEVICES</small>
+                <h3>2</h3>
+
+                <div class="usage">
+                    <span style="width:40%"></span>
+                </div>
+
+                <div class="usage-text">
+                    <span>2 active</span>
+                    <span>5 limit</span>
+                </div>
+            </div>
+
+
+            <div class="dash-card">
+                <small>LICENSE STATUS</small>
+                <h3 style="color:var(--green);">ACTIVE</h3>
+
+                <div style="color:#697284;font-size:.62rem;margin-top:10px;">
+                    Expires in 18 days
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- CONTENT -->
+
+        <div class="content-grid">
+
+            <!-- LEFT -->
+
+            <div>
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>My License</h3>
+
+                        <button onclick="copyLicense()">
+                            Copy License
+                        </button>
+                    </div>
+
+                    <div class="license-box">
+
+                        <div class="license-label">
+                            SOFTWARE LICENSE KEY
+                        </div>
+
+                        <div class="license-key" id="licenseKey">
+                            MSLM-8K4P-X92Q-7T3A-5L9D
+                        </div>
+
+                        <div class="license-meta">
+
+                            <div>
+                                <small>PLAN</small>
+                                <strong>Medium</strong>
+                            </div>
+
+                            <div>
+                                <small>STATUS</small>
+                                <strong style="color:var(--green);">
+                                    ACTIVE
+                                </strong>
+                            </div>
+
+                            <div>
+                                <small>EXPIRES</small>
+                                <strong>12 Oct 2026</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TASKFLOW -->
+
+                <div class="taskflow-card">
+
+                    <h3>Ready to get things done?</h3>
+
+                    <p>
+                        Your Medium license is active. Open TaskFlow
+                        and start managing your projects.
+                    </p>
+
+                    <button class="btn btn-primary" onclick="openTaskFlow()">
+                        Open TaskFlow →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Recent Payments</h3>
+
+                    <button onclick="showMessage('All Payments')">
+                        View all
+                    </button>
+                </div>
+
+
+                <div class="payment-row">
+
+                    <div>
+                        <div class="payment-name">Medium Plan</div>
+                        <div class="payment-date">12 Sep 2026</div>
+                    </div>
+
+                    <div style="text-align:right;">
+                        <div class="payment-amount">₹999</div>
+                        <div class="paid">● PAID</div>
+                    </div>
+
+                </div>
+
+
+                <div class="payment-row">
+
+                    <div>
+                        <div class="payment-name">Medium Plan</div>
+                        <div class="payment-date">12 Aug 2026</div>
+                    </div>
+
+                    <div style="text-align:right;">
+                        <div class="payment-amount">₹999</div>
+                        <div class="paid">● PAID</div>
+                    </div>
+
+                </div>
+
+
+                <div class="payment-row">
+
+                    <div>
+                        <div class="payment-name">Medium Plan</div>
+                        <div class="payment-date">12 Jul 2026</div>
+                    </div>
+
+                    <div style="text-align:right;">
+                        <div class="payment-amount">₹999</div>
+                        <div class="paid">● PAID</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="./api.js"></script>
+<script src="./app.js"></script>
+
+<script>
+if (!requireLogin("customer")) {
+    throw new Error("Authentication required");
+}
+
+// =========================================================
+// UTILITIES
+// =========================================================
+
+function formatCurrency(amount) {
+    return "₹" + Number(amount || 0).toLocaleString("en-IN", {
+        maximumFractionDigits: 2
+    });
+}
+
+function getDaysRemaining(expiryText) {
+    if (!expiryText) return 0;
+    const expiry = new Date(expiryText);
+    if (Number.isNaN(expiry.getTime())) return 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    expiry.setHours(0, 0, 0, 0);
+    return Math.max(0, Math.ceil((expiry - today) / 86400000));
+}
+
+function formatPaymentDate(dateText) {
+    if (!dateText) return "—";
+    const date = new Date(dateText);
+    if (Number.isNaN(date.getTime())) return dateText;
+    return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+// =========================================================
+// RENDER HELPERS  (same DOM logic as before, data-driven)
+// =========================================================
+
+function renderProfile(name) {
+
+    const welcome = document.querySelector(".topbar h1");
+    if (welcome) welcome.textContent = "Welcome back, " + name + " 👋";
+
+    const profileName = document.querySelector(".profile-info strong");
+    if (profileName) profileName.textContent = name;
+
+    const avatar = document.querySelector(".avatar-large");
+    if (avatar) avatar.textContent = name.charAt(0).toUpperCase();
+}
+
+function renderSubscriptionAndLicense(plan, status, expiry, licenseKey) {
+
+    // Current plan banner
+    const planHeading = document.querySelector(".plan-info h2");
+    if (planHeading) {
+        planHeading.innerHTML =
+            plan + ' <span class="active-badge">● ' + status + '</span>';
+    }
+
+    const billingDate = document.querySelector(".subscription-banner strong");
+    if (billingDate) billingDate.textContent = expiry;
+
+    // License box
+    const licenseKeyEl = document.getElementById("licenseKey");
+    if (licenseKeyEl) licenseKeyEl.textContent = licenseKey;
+
+    const licenseMeta = document.querySelectorAll(".license-meta strong");
+    if (licenseMeta.length >= 3) {
+        licenseMeta[0].textContent = plan;
+        licenseMeta[1].textContent = status;
+        licenseMeta[1].style.color = status === "ACTIVE" ? "var(--green)" : "#f87171";
+        licenseMeta[2].textContent = expiry;
+    }
+
+    // License status card (4th dash-card)
+    const statusCard = document.querySelector(".dash-card:nth-child(4) h3");
+    if (statusCard) {
+        statusCard.textContent = status;
+        statusCard.style.color = status === "ACTIVE" ? "var(--green)" : "#f87171";
+    }
+
+    const daysEl = document.querySelector(".dash-card:nth-child(4) div");
+    if (daysEl) {
+        const days = getDaysRemaining(expiry);
+        daysEl.textContent = status === "ACTIVE"
+            ? "Expires in " + days + " days"
+            : "License unavailable";
+    }
+
+    // TaskFlow card message
+    const taskflowText = document.querySelector(".taskflow-card p");
+    if (taskflowText) {
+        taskflowText.textContent = status === "ACTIVE"
+            ? "Your " + plan + " license is active. Open TaskFlow and start managing your projects."
+            : "Your license is not active. Renew your subscription to access TaskFlow.";
+    }
+}
+
+function renderTransactions(transactions, planFallback) {
+
+    const paymentPanel = document.querySelector(".content-grid .panel:last-child");
+    if (!paymentPanel) return;
+
+    // Clear static placeholder rows
+    paymentPanel.querySelectorAll(".payment-row").forEach(r => r.remove());
+
+    if (!transactions || transactions.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "payment-row";
+        empty.innerHTML =
+            '<div>' +
+                '<div class="payment-name">No payments yet</div>' +
+                '<div class="payment-date">—</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+                '<div class="payment-amount">₹0</div>' +
+                '<div class="payment-date">—</div>' +
+            '</div>';
+        paymentPanel.appendChild(empty);
+        return;
+    }
+
+    transactions.slice(0, 5).forEach(txn => {
+        const row = document.createElement("div");
+        row.className = "payment-row";
+
+        // API returns subscription__plan__name via serializer; fall back gracefully
+        const planName =
+            txn.plan_name ||
+            txn.plan ||
+            planFallback ||
+            "Subscription";
+
+        const dateStr =
+            txn.transaction_date ||
+            txn.date ||
+            "";
+
+        row.innerHTML =
+            '<div>' +
+                '<div class="payment-name">' + planName + ' Plan</div>' +
+                '<div class="payment-date">' + formatPaymentDate(dateStr) + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+                '<div class="payment-amount">' + formatCurrency(txn.amount) + '</div>' +
+                '<div class="paid">● ' + (txn.status || "PAID") + '</div>' +
+            '</div>';
+
+        paymentPanel.appendChild(row);
+    });
+}
+
+// =========================================================
+// LIVE API LOADER  — replaces getCustomerState() localStorage reads
+// =========================================================
+
+async function loadCustomerDashboard() {
+
+    // -------------------------------------------------------
+    // 1. Fetch authenticated user profile from GET /api/me/
+    // -------------------------------------------------------
+    let userName = "Customer";
+    let userEmail = "";
+
+    try {
+        const meData = await getMe();
+        const user = meData.user || {};
+        userName  = user.name  || user.username || "Customer";
+        userEmail = user.email || "";
+    } catch (err) {
+        console.error("Failed to load user profile:", err);
+    }
+
+    renderProfile(userName);
+
+    // -------------------------------------------------------
+    // 2. Fetch subscriptions from GET /api/subscriptions/
+    // -------------------------------------------------------
+    let plan      = "No Plan";
+    let subStatus = "INACTIVE";
+    let expiry    = "—";
+
+    try {
+        const subData = await getSubscriptions();
+        const subs = subData.subscriptions || [];
+
+        // Use the first (most recent) ACTIVE subscription, or just the first one
+        const activeSub = subs.find(s => s.status === "ACTIVE") || subs[0];
+
+        if (activeSub) {
+            plan      = activeSub.plan_name || activeSub.plan || "No Plan";
+            subStatus = activeSub.status    || "INACTIVE";
+            expiry    = activeSub.expiry_date || activeSub.expiry || "—";
+        }
+    } catch (err) {
+        console.error("Failed to load subscriptions:", err);
+    }
+
+    // -------------------------------------------------------
+    // 3. Fetch licenses from GET /api/licenses/
+    // -------------------------------------------------------
+    let licenseKey    = "No license generated";
+    let licenseStatus = subStatus;
+    let licenseExpiry = expiry;
+    let licensePlan   = plan;
+
+    try {
+        const licData = await getLicenses();
+        const licenses = licData.licenses || [];
+
+        // Prefer an ACTIVE license; fall back to first available
+        const activeLic = licenses.find(l => l.status === "ACTIVE") || licenses[0];
+
+        if (activeLic) {
+            licenseKey    = activeLic.license_key || "No license generated";
+            licenseStatus = activeLic.status      || subStatus;
+            licenseExpiry = activeLic.expiry_date  || activeLic.expiry || expiry;
+            licensePlan   = activeLic.plan_name    || activeLic.plan   || plan;
+        }
+    } catch (err) {
+        console.error("Failed to load licenses:", err);
+    }
+
+    // Render plan / license section with live API values
+    renderSubscriptionAndLicense(licensePlan, licenseStatus, licenseExpiry, licenseKey);
+
+    // -------------------------------------------------------
+    // 4. Fetch transactions from GET /api/transactions/
+    // -------------------------------------------------------
+    try {
+        const txnData = await getTransactions();
+        renderTransactions(txnData.transactions || [], licensePlan);
+    } catch (err) {
+        console.error("Failed to load transactions:", err);
+        renderTransactions([], licensePlan);
+    }
+}
+
+// =========================================================
+// ACTIONS
+// =========================================================
+
+function showMessage(section) {
+    alert(
+        section +
+        " section selected.\n\n" +
+        "This module will be connected to the LicenseFlow backend."
+    );
+}
+
+function copyLicense() {
+    const key = document.getElementById("licenseKey").innerText;
+    if (!key || key === "No license generated") {
+        alert("No active license is available.");
+        return;
+    }
+    navigator.clipboard.writeText(key)
+        .then(() => alert("License key copied!"))
+        .catch(() => alert("Unable to copy license key."));
+}
+
+function renewPlan() {
+    // Grab current values from the live-rendered DOM
+    const planText =
+        (document.querySelector(".plan-info h2") || {}).textContent || "Current Plan";
+    alert(
+        "Renew Plan\n\nNext step: Razorpay checkout."
+    );
+}
+
+async function openTaskFlow() {
+    // Verify license live against backend before allowing navigation
+    const licenseKey = (document.getElementById("licenseKey") || {}).innerText || "";
+
+    if (!licenseKey || licenseKey === "No license generated") {
+        alert("TaskFlow access denied.\n\nNo active license found.");
+        return;
+    }
+
+    try {
+        const result = await verifyLicense(licenseKey);
+        if (result && result.valid) {
+            window.location.href = "taskflow.html";
+        } else {
+            const reason = (result && result.message) || "License is not active.";
+            alert("TaskFlow access denied.\n\n" + reason);
+        }
+    } catch (err) {
+        console.error("License verification failed:", err);
+        alert("TaskFlow access denied.\n\nCould not verify license: " + (err.message || "Network error."));
+    }
+}
+
+function logout() {
+    logoutLicenseFlow();
+}
+
+loadCustomerDashboard();
+</script>
+
+</body>
+</html>

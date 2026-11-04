@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow — Project Management</title>
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+
+        /* =====================================================
+           TASKFLOW APPLICATION
+        ===================================================== */
+
+        .taskflow-app {
+            min-height: 100vh;
+            display: flex;
+            background: #070a12;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .tf-sidebar {
+            width: 245px;
+            min-height: 100vh;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            padding: 22px 15px;
+
+            background: #090d17;
+
+            border-right: 1px solid var(--border);
+
+            z-index: 50;
+        }
+
+        .tf-logo {
+            padding: 0 12px 25px;
+        }
+
+        .tf-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .tf-brand-mark {
+            width: 35px;
+            height: 35px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #5865f2,
+                #8b5cf6
+            );
+
+            font-size: .75rem;
+        }
+
+        .tf-section {
+            margin: 20px 10px 8px;
+
+            color: #555e71;
+
+            font-size: .61rem;
+
+            font-weight: 700;
+
+            letter-spacing: .12em;
+        }
+
+        .tf-nav {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 10px 12px;
+
+            margin: 3px 0;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: #8991a3;
+
+            font-size: .78rem;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .tf-nav:hover,
+        .tf-nav.active {
+            color: white;
+            background: rgba(88,101,242,.13);
+        }
+
+        .tf-nav-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        /* ================= MAIN ================= */
+
+        .tf-main {
+            width: calc(100% - 245px);
+
+            margin-left: 245px;
+
+            padding: 28px 38px 60px;
+        }
+
+        .tf-topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .tf-topbar h1 {
+            font-size: 1.55rem;
+
+            letter-spacing: -.04em;
+        }
+
+        .tf-topbar p {
+            color: var(--muted);
+
+            font-size: .76rem;
+
+            margin-top: 4px;
+        }
+
+        .tf-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .tf-search {
+            width: 190px;
+
+            padding: 10px 13px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: rgba(255,255,255,.025);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: .7rem;
+        }
+
+        .tf-search:focus {
+            border-color: rgba(88,101,242,.5);
+        }
+
+        /* ================= LICENSE BAR ================= */
+
+        .license-status-bar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 18px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(37,214,149,.15);
+
+            border-radius: 12px;
+
+            background: rgba(37,214,149,.035);
+        }
+
+        .license-status-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .license-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        .license-status-left strong {
+            font-size: .7rem;
+        }
+
+        .license-status-left span {
+            color: #687284;
+
+            font-size: .6rem;
+        }
+
+        .license-status-bar button {
+            border: 0;
+
+            background: transparent;
+
+            color: #7f89ff;
+
+            font-size: .62rem;
+
+            cursor: pointer;
+        }
+
+        /* ================= PROJECT STATS ================= */
+
+        .tf-stats {
+            display: grid;
+
+            grid-template-columns: repeat(4,1fr);
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .tf-stat {
+            padding: 18px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.018);
+        }
+
+        .tf-stat small {
+            color: var(--muted);
+
+            font-size: .62rem;
+        }
+
+        .tf-stat strong {
+            display: block;
+
+            margin-top: 8px;
+
+            font-size: 1.35rem;
+        }
+
+        .tf-stat span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #687183;
+
+            font-size: .57rem;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .tf-content {
+            display: grid;
+
+            grid-template-columns: 1.4fr .6fr;
+
+            gap: 16px;
+        }
+
+        .tf-panel {
+            padding: 22px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 15px;
+
+            background: rgba(255,255,255,.018);
+        }
+
+        .tf-panel-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .tf-panel-header h3 {
+            font-size: .9rem;
+        }
+
+        .tf-panel-header button {
+            border: 0;
+
+            background: transparent;
+
+            color: #858eff;
+
+            font-size: .64rem;
+
+            cursor: pointer;
+        }
+
+        /* ================= PROJECTS ================= */
+
+        .projects {
+            display: grid;
+
+            gap: 10px;
+        }
+
+        .project {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 14px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.012);
+
+            transition: .2s;
+        }
+
+        .project:hover {
+            background: rgba(255,255,255,.035);
+
+            border-color: rgba(88,101,242,.2);
+        }
+
+        .project-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .project-icon {
+            width: 35px;
+            height: 35px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 9px;
+
+            background: rgba(88,101,242,.12);
+
+            color: #8d95ff;
+
+            font-size: .75rem;
+        }
+
+        .project-name strong {
+            display: block;
+
+            font-size: .72rem;
+        }
+
+        .project-name span {
+            color: #626b7c;
+
+            font-size: .56rem;
+        }
+
+        .project-progress {
+            width: 90px;
+        }
+
+        .progress-bar {
+            height: 4px;
+
+            overflow: hidden;
+
+            border-radius: 5px;
+
+            background: #1a2030;
+        }
+
+        .progress-bar span {
+            display: block;
+
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: linear-gradient(
+                90deg,
+                #5865f2,
+                #8b5cf6
+            );
+        }
+
+        .progress-label {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 5px;
+
+            color: #626b7c;
+
+            font-size: .52rem;
+        }
+
+        /* ================= TASKS ================= */
+
+        .task-list {
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .task {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,.045);
+        }
+
+        .task:last-child {
+            border-bottom: 0;
+        }
+
+        .task-check {
+            width: 17px;
+            height: 17px;
+
+            display: grid;
+
+            place-items: center;
+
+            border: 1px solid #394154;
+
+            border-radius: 5px;
+
+            color: var(--green);
+
+            font-size: .55rem;
+        }
+
+        .task-check.done {
+            background: rgba(37,214,149,.1);
+
+            border-color: rgba(37,214,149,.3);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-info strong {
+            display: block;
+
+            font-size: .66rem;
+        }
+
+        .task-info span {
+            color: #626b7c;
+
+            font-size: .54rem;
+        }
+
+        .priority {
+            padding: 4px 6px;
+
+            border-radius: 5px;
+
+            font-size: .5rem;
+
+            font-weight: 700;
+        }
+
+        .high {
+            color: #ff7b88;
+
+            background: rgba(255,113,128,.08);
+        }
+
+        .medium {
+            color: #ffbd6b;
+
+            background: rgba(255,174,87,.08);
+        }
+
+        .low {
+            color: #6fe5b6;
+
+            background: rgba(37,214,149,.08);
+        }
+
+        /* ================= TEAM ================= */
+
+        .team-list {
+            display: grid;
+
+            gap: 11px;
+        }
+
+        .team-member {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .member-avatar {
+            width: 31px;
+            height: 31px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background: rgba(88,101,242,.13);
+
+            color: #9ca3ff;
+
+            font-size: .57rem;
+
+            font-weight: 700;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-info strong {
+            display: block;
+
+            font-size: .63rem;
+        }
+
+        .member-info span {
+            color: #626b7c;
+
+            font-size: .52rem;
+        }
+
+        .online {
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+        }
+
+        /* ================= ACTIVITY ================= */
+
+        .tf-activity {
+            display: grid;
+
+            gap: 14px;
+        }
+
+        .tf-activity-item {
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .tf-activity-icon {
+            width: 27px;
+            height: 27px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 8px;
+
+            background: rgba(88,101,242,.1);
+
+            color: #8992ff;
+
+            font-size: .6rem;
+        }
+
+        .tf-activity-item strong {
+            display: block;
+
+            font-size: .6rem;
+        }
+
+        .tf-activity-item span {
+            color: #626b7c;
+
+            font-size: .52rem;
+        }
+
+        /* ================= MODAL ================= */
+
+        .tf-modal {
+            position: fixed;
+
+            inset: 0;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 100;
+
+            background: rgba(0,0,0,.75);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .tf-modal.show {
+            display: flex;
+        }
+
+        .tf-modal-box {
+            width: min(430px,92%);
+
+            padding: 28px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            background: #0d111c;
+
+            box-shadow: 0 30px 100px rgba(0,0,0,.6);
+        }
+
+        .tf-modal-box h2 {
+            font-size: 1.1rem;
+
+            margin-bottom: 18px;
+        }
+
+        .tf-input {
+            width: 100%;
+
+            padding: 11px;
+
+            margin-bottom: 10px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,.025);
+
+            color: white;
+
+            outline: none;
+        }
+
+        .tf-modal-buttons {
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:1050px) {
+
+            .tf-sidebar {
+                width: 70px;
+            }
+
+            .tf-sidebar .tf-brand span,
+            .tf-section,
+            .tf-nav span:not(.tf-nav-icon) {
+                display: none;
+            }
+
+            .tf-main {
+                width: calc(100% - 70px);
+
+                margin-left: 70px;
+
+                padding: 25px;
+            }
+
+            .tf-stats {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .tf-content {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:650px) {
+
+            .tf-main {
+                padding: 18px 12px;
+            }
+
+            .tf-search {
+                display: none;
+            }
+
+            .tf-topbar h1 {
+                font-size: 1.2rem;
+            }
+
+            .tf-stats {
+                gap: 7px;
+            }
+
+            .tf-stat {
+                padding: 14px;
+            }
+
+            .tf-stat strong {
+                font-size: 1.05rem;
+            }
+
+            .project-progress {
+                display: none;
+            }
+
+            .license-status-bar {
+                align-items: flex-start;
+
+                gap: 10px;
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="taskflow-app">
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="tf-sidebar">
+
+        <div class="tf-logo">
+
+            <div class="tf-brand">
+
+                <div class="tf-brand-mark">
+                    TF
+                </div>
+
+                <span>TaskFlow</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="tf-section">
+            WORKSPACE
+        </div>
+
+
+        <button class="tf-nav active">
+
+            <span class="tf-nav-icon">▦</span>
+
+            <span>Overview</span>
+
+        </button>
+
+
+        <button class="tf-nav" onclick="taskMessage('Projects')">
+
+            <span class="tf-nav-icon">◆</span>
+
+            <span>Projects</span>
+
+        </button>
+
+
+        <button class="tf-nav" onclick="taskMessage('My Tasks')">
+
+            <span class="tf-nav-icon">✓</span>
+
+            <span>My Tasks</span>
+
+        </button>
+
+
+        <button class="tf-nav" onclick="taskMessage('Team')">
+
+            <span class="tf-nav-icon">♙</span>
+
+            <span>Team</span>
+
+        </button>
+
+
+        <div class="tf-section">
+            TOOLS
+        </div>
+
+
+        <button class="tf-nav" onclick="taskMessage('Analytics')">
+
+            <span class="tf-nav-icon">◒</span>
+
+            <span>Analytics</span>
+
+        </button>
+
+
+        <button class="tf-nav" onclick="taskMessage('Calendar')">
+
+            <span class="tf-nav-icon">□</span>
+
+            <span>Calendar</span>
+
+        </button>
+
+
+        <button class="tf-nav" onclick="taskMessage('Settings')">
+
+            <span class="tf-nav-icon">⚙</span>
+
+            <span>Settings</span>
+
+        </button>
+
+
+        <div class="tf-section">
+            LICENSEFLOW
+        </div>
+
+
+        <button class="tf-nav"
+                onclick="window.location.href='customer.html'">
+
+            <span class="tf-nav-icon">←</span>
+
+            <span>LicenseFlow</span>
+
+        </button>
+
+
+        <button class="tf-nav"
+                onclick="logoutLicenseFlow()"
+
+            <span class="tf-nav-icon">↪</span>
+
+            <span>Logout</span>
+
+        </button>
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN
+    ================================================== -->
+
+    <main class="tf-main">
+
+
+        <!-- TOPBAR -->
+
+        <div class="tf-topbar">
+
+            <div>
+
+                <h1>
+                    Good morning, Aditya 👋
+                </h1>
+
+                <p>
+                    Here's what's happening across your workspace.
+                </p>
+
+            </div>
+
+
+            <div class="tf-actions">
+
+                <input
+                    class="tf-search"
+                    type="text"
+                    placeholder="Search projects, tasks..."
+                    onkeyup="searchTasks(this.value)"
+                >
+
+                <button
+                    class="btn btn-primary"
+                    onclick="openTaskModal()"
+                >
+                    + New Task
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- LICENSE STATUS -->
+
+        <div class="license-status-bar">
+
+            <div class="license-status-left">
+
+                <div class="license-dot"></div>
+
+                <div>
+
+                    <strong>
+                        License verified
+                    </strong>
+
+                    <span>
+                        Medium Plan · Expires 12 Oct 2026
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                onclick="window.location.href='customer.html'"
+            >
+                View License →
+            </button>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="tf-stats">
+
+            <div class="tf-stat">
+
+                <small>
+                    TOTAL PROJECTS
+                </small>
+
+                <strong>
+                    12
+                </strong>
+
+                <span>
+                    of 25 allowed
+                </span>
+
+            </div>
+
+
+            <div class="tf-stat">
+
+                <small>
+                    ACTIVE TASKS
+                </small>
+
+                <strong>
+                    48
+                </strong>
+
+                <span>
+                    184 total tasks
+                </span>
+
+            </div>
+
+
+            <div class="tf-stat">
+
+                <small>
+                    COMPLETED
+                </small>
+
+                <strong>
+                    136
+                </strong>
+
+                <span>
+                    74% completion rate
+                </span>
+
+            </div>
+
+
+            <div class="tf-stat">
+
+                <small>
+                    TEAM MEMBERS
+                </small>
+
+                <strong>
+                    4
+                </strong>
+
+                <span>
+                    of 5 allowed
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+
+        <div class="tf-content">
+
+
+            <!-- LEFT COLUMN -->
+
+            <div>
+
+
+                <!-- PROJECTS -->
+
+                <div class="tf-panel">
+
+                    <div class="tf-panel-header">
+
+                        <h3>
+                            Active Projects
+                        </h3>
+
+                        <button
+                            onclick="taskMessage('All Projects')"
+                        >
+                            View all →
+                        </button>
+
+                    </div>
+
+
+                    <div class="projects">
+
+
+                        <div class="project">
+
+                            <div class="project-left">
+
+                                <div class="project-icon">
+                                    W
+                                </div>
+
+                                <div class="project-name">
+
+                                    <strong>
+                                        Website Redesign
+                                    </strong>
+
+                                    <span>
+                                        18 tasks · Updated 2h ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-progress">
+
+                                <div class="progress-bar">
+                                    <span style="width:82%"></span>
+                                </div>
+
+                                <div class="progress-label">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <span>
+                                        82%
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="project">
+
+                            <div class="project-left">
+
+                                <div
+                                    class="project-icon"
+                                    style="
+                                        background:rgba(139,92,246,.12);
+                                        color:#ad8aff;
+                                    "
+                                >
+                                    M
+                                </div>
+
+                                <div class="project-name">
+
+                                    <strong>
+                                        Mobile Application
+                                    </strong>
+
+                                    <span>
+                                        42 tasks · Updated 5h ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-progress">
+
+                                <div class="progress-bar">
+                                    <span
+                                        style="
+                                            width:61%;
+                                            background:
+                                            linear-gradient(
+                                                90deg,
+                                                #8b5cf6,
+                                                #c084fc
+                                            );
+                                        "
+                                    ></span>
+                                </div>
+
+                                <div class="progress-label">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <span>
+                                        61%
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="project">
+
+                            <div class="project-left">
+
+                                <div
+                                    class="project-icon"
+                                    style="
+                                        background:rgba(37,214,149,.1);
+                                        color:#51e0ad;
+                                    "
+                                >
+                                    M
+                                </div>
+
+                                <div class="project-name">
+
+                                    <strong>
+                                        Marketing Campaign
+                                    </strong>
+
+                                    <span>
+                                        26 tasks · Updated yesterday
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-progress">
+
+                                <div class="progress-bar">
+                                    <span
+                                        style="
+                                            width:43%;
+                                            background:
+                                            linear-gradient(
+                                                90deg,
+                                                #25d695,
+                                                #55e7b0
+                                            );
+                                        "
+                                    ></span>
+                                </div>
+
+                                <div class="progress-label">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <span>
+                                        43%
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="project">
+
+                            <div class="project-left">
+
+                                <div
+                                    class="project-icon"
+                                    style="
+                                        background:rgba(255,174,87,.1);
+                                        color:#ffc27b;
+                                    "
+                                >
+                                    P
+                                </div>
+
+                                <div class="project-name">
+
+                                    <strong>
+                                        Product Launch
+                                    </strong>
+
+                                    <span>
+                                        11 tasks · Updated 2d ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-progress">
+
+                                <div class="progress-bar">
+                                    <span
+                                        style="
+                                            width:28%;
+                                            background:
+                                            linear-gradient(
+                                                90deg,
+                                                #ffae57,
+                                                #ffd08d
+                                            );
+                                        "
+                                    ></span>
+                                </div>
+
+                                <div class="progress-label">
+
+                                    <span>
+                                        Progress
+                                    </span>
+
+                                    <span>
+                                        28%
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TASKS -->
+
+                <div
+                    class="tf-panel"
+                    style="margin-top:16px;"
+                >
+
+                    <div class="tf-panel-header">
+
+                        <h3>
+                            My Tasks
+                        </h3>
+
+                        <button
+                            onclick="taskMessage('All Tasks')"
+                        >
+                            View all →
+                        </button>
+
+                    </div>
+
+
+                    <div class="task-list">
+
+
+                        <div class="task">
+
+                            <div
+                                class="task-check"
+                                onclick="completeTask(this)"
+                            >
+                            </div>
+
+                            <div class="task-info">
+
+                                <strong>
+                                    Finalize homepage design
+                                </strong>
+
+                                <span>
+                                    Website Redesign · Due today
+                                </span>
+
+                            </div>
+
+                            <span class="priority high">
+                                HIGH
+                            </span>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div
+                                class="task-check"
+                                onclick="completeTask(this)"
+                            >
+                            </div>
+
+                            <div class="task-info">
+
+                                <strong>
+                                    Review API integration
+                                </strong>
+
+                                <span>
+                                    Mobile Application · Due tomorrow
+                                </span>
+
+                            </div>
+
+                            <span class="priority medium">
+                                MEDIUM
+                            </span>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div
+                                class="task-check done"
+                            >
+                                ✓
+                            </div>
+
+                            <div class="task-info">
+
+                                <strong
+                                    style="
+                                        text-decoration:line-through;
+                                        color:#656e80;
+                                    "
+                                >
+                                    Prepare campaign assets
+                                </strong>
+
+                                <span>
+                                    Marketing Campaign · Completed
+                                </span>
+
+                            </div>
+
+                            <span class="priority low">
+                                LOW
+                            </span>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div
+                                class="task-check"
+                                onclick="completeTask(this)"
+                            >
+                            </div>
+
+                            <div class="task-info">
+
+                                <strong>
+                                    Prepare launch checklist
+                                </strong>
+
+                                <span>
+                                    Product Launch · Due Friday
+                                </span>
+
+                            </div>
+
+                            <span class="priority medium">
+                                MEDIUM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT COLUMN -->
+
+            <div>
+
+
+                <!-- TEAM -->
+
+                <div class="tf-panel">
+
+                    <div class="tf-panel-header">
+
+                        <h3>
+                            Team Members
+                        </h3>
+
+                        <button
+                            onclick="taskMessage('Manage Team')"
+                        >
+                            Manage
+                        </button>
+
+                    </div>
+
+
+                    <div class="team-list">
+
+
+                        <div class="team-member">
+
+                            <div class="member-avatar">
+                                AB
+                            </div>
+
+                            <div class="member-info">
+
+                                <strong>
+                                    Aditya Birla
+                                </strong>
+
+                                <span>
+                                    Owner
+                                </span>
+
+                            </div>
+
+                            <div class="online"></div>
+
+                        </div>
+
+
+                        <div class="team-member">
+
+                            <div
+                                class="member-avatar"
+                                style="
+                                    background:rgba(139,92,246,.12);
+                                    color:#b092ff;
+                                "
+                            >
+                                RK
+                            </div>
+
+                            <div class="member-info">
+
+                                <strong>
+                                    Rahul Kapoor
+                                </strong>
+
+                                <span>
+                                    Developer
+                                </span>
+
+                            </div>
+
+                            <div class="online"></div>
+
+                        </div>
+
+
+                        <div class="team-member">
+
+                            <div
+                                class="member-avatar"
+                                style="
+                                    background:rgba(37,214,149,.1);
+                                    color:#54e3b0;
+                                "
+                            >
+                                SK
+                            </div>
+
+                            <div class="member-info">
+
+                                <strong>
+                                    Sarah Khan
+                                </strong>
+
+                                <span>
+                                    Designer
+                                </span>
+
+                            </div>
+
+                            <div class="online"></div>
+
+                        </div>
+
+
+                        <div class="team-member">
+
+                            <div
+                                class="member-avatar"
+                                style="
+                                    background:rgba(255,174,87,.1);
+                                    color:#ffc27d;
+                                "
+                            >
+                                VM
+                            </div>
+
+                            <div class="member-info">
+
+                                <strong>
+                                    Vikram Mehta
+                                </strong>
+
+                                <span>
+                                    Marketing
+                                </span>
+
+                            </div>
+
+                            <div
+                                class="online"
+                                style="background:#5d6576;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVITY -->
+
+                <div
+                    class="tf-panel"
+                    style="margin-top:16px;"
+                >
+
+                    <div class="tf-panel-header">
+
+                        <h3>
+                            Recent Activity
+                        </h3>
+
+                        <button>
+                            Live
+                        </button>
+
+                    </div>
+
+
+                    <div class="tf-activity">
+
+
+                        <div class="tf-activity-item">
+
+                            <div class="tf-activity-icon">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Rahul completed a task
+                                </strong>
+
+                                <span>
+                                    8 minutes ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tf-activity-item">
+
+                            <div class="tf-activity-icon">
+                                +
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    New task created
+                                </strong>
+
+                                <span>
+                                    Sarah · 24 minutes ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tf-activity-item">
+
+                            <div class="tf-activity-icon">
+                                ◆
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Project updated
+                                </strong>
+
+                                <span>
+                                    Website Redesign · 1h ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="tf-activity-item">
+
+                            <div class="tf-activity-icon">
+                                ♙
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Team member joined
+                                </strong>
+
+                                <span>
+                                    Vikram · Yesterday
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PLAN LIMIT -->
+
+                <div
+                    class="tf-panel"
+                    style="margin-top:16px;"
+                >
+
+                    <div class="tf-panel-header">
+
+                        <h3>
+                            Medium Plan Usage
+                        </h3>
+
+                        <button
+                            onclick="window.location.href='customer.html'"
+                        >
+                            Upgrade
+                        </button>
+
+                    </div>
+
+
+                    <div style="margin-bottom:15px;">
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                font-size:.6rem;
+                                color:#737c8e;
+                                margin-bottom:6px;
+                            "
+                        >
+                            <span>
+                                Projects
+                            </span>
+
+                            <span>
+                                12 / 25
+                            </span>
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <span style="width:48%"></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                font-size:.6rem;
+                                color:#737c8e;
+                                margin-bottom:6px;
+                            "
+                        >
+                            <span>
+                                Team Members
+                            </span>
+
+                            <span>
+                                4 / 5
+                            </span>
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <span
+                                style="
+                                    width:80%;
+                                    background:
+                                    linear-gradient(
+                                        90deg,
+                                        #ffae57,
+                                        #ffcf88
+                                    );
+                                "
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     NEW TASK MODAL
+====================================================== -->
+
+<div
+    class="tf-modal"
+    id="taskModal"
+>
+
+    <div class="tf-modal-box">
+
+        <h2>
+            Create New Task
+        </h2>
+
+        <input
+            class="tf-input"
+            id="taskTitle"
+            type="text"
+            placeholder="Task title"
+        >
+
+        <input
+            class="tf-input"
+            id="taskProject"
+            type="text"
+            placeholder="Project name"
+        >
+
+        <div class="tf-modal-buttons">
+
+            <button
+                class="btn btn-primary"
+                onclick="createTask()"
+            >
+                Create Task
+            </button>
+
+            <button
+                class="btn btn-outline"
+                onclick="closeTaskModal()"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<script src="./api.js"></script>
+<script src="./app.js"></script>
+
+<script>
+
+/* =====================================================
+   AUTH GUARD
+   ===================================================== */
+
+if (!requireLogin("customer")) {
+    throw new Error("Authentication required");
+}
+
+
+/* =====================================================
+   TOPBAR GREETING  — live from GET /api/me/
+   ===================================================== */
+
+async function loadUserGreeting() {
+
+    try {
+
+        const meData = await getMe();
+        const user   = meData.user || {};
+        const name   = user.name || user.username || "there";
+
+        const greeting = document.querySelector(".tf-topbar h1");
+        if (greeting) {
+            greeting.textContent = "Good morning, " + name + " 👋";
+        }
+
+    } catch (err) {
+        console.warn("Could not load user greeting:", err);
+    }
+}
+
+
+/* =====================================================
+   TASKFLOW LICENSE VERIFICATION
+   — async POST to /api/verify-license/ via api.js
+   ===================================================== */
+
+async function validateTaskFlowLicense() {
+
+    const statusElement =
+        document.querySelector(".license-status-left strong");
+
+    const detailsElement =
+        document.querySelector(".license-status-left span");
+
+    const dotElement =
+        document.querySelector(".license-dot");
+
+    const statusBar =
+        document.querySelector(".license-status-bar");
+
+    if (!statusElement || !detailsElement) {
+        return false;
+    }
+
+    // Show a loading state while waiting for the API
+    statusElement.textContent  = "Verifying license…";
+    detailsElement.textContent = "Checking with LicenseFlow backend…";
+    if (dotElement) {
+        dotElement.style.background = "#8991a3";
+        dotElement.style.boxShadow  = "none";
+    }
+
+    // -------------------------------------------------------
+    // 1. Retrieve the stored license key
+    //    First try the live DOM (customer.html stores it there),
+    //    then fall back to licenseflow_user or licenseflow_state.
+    // -------------------------------------------------------
+    let licenseKey = "";
+
+    try {
+        // Prefer the key from the user object saved at login
+        const userRaw = localStorage.getItem("licenseflow_user");
+        if (userRaw) {
+            const userObj = JSON.parse(userRaw);
+            // customer_profile doesn't carry the key; so we fetch licenses
+        }
+    } catch (_) {}
+
+    // Fetch the current user's licenses and pick the first ACTIVE one
+    try {
+
+        const licData  = await getLicenses();
+        const licenses = licData.licenses || [];
+
+        const activeLic =
+            licenses.find(l => l.status === "ACTIVE") || licenses[0];
+
+        if (activeLic) {
+            licenseKey = activeLic.license_key || "";
+        }
+
+    } catch (err) {
+        console.error("Failed to retrieve license key:", err);
+    }
+
+    // -------------------------------------------------------
+    // 2. Gate: no license key available
+    // -------------------------------------------------------
+    if (!licenseKey) {
+
+        _setStatusBadge(
+            statusElement,
+            detailsElement,
+            dotElement,
+            statusBar,
+            false,
+            "No active license",
+            "No LicenseFlow license found for this account."
+        );
+
+        return false;
+    }
+
+    // -------------------------------------------------------
+    // 3. POST /api/verify-license/ via api.js verifyLicense()
+    // -------------------------------------------------------
+    try {
+
+        const result = await verifyLicense(licenseKey);
+
+        if (result && result.valid) {
+
+            const plan   = result.plan   || "Subscription";
+            const expiry = result.expiry_date
+                ? new Date(result.expiry_date).toLocaleDateString("en-IN", {
+                      day: "2-digit", month: "short", year: "numeric"
+                  })
+                : "—";
+
+            _setStatusBadge(
+                statusElement,
+                detailsElement,
+                dotElement,
+                statusBar,
+                true,
+                "License verified",
+                plan + " Plan · Expires " + expiry
+            );
+
+            return true;
+
+        } else {
+
+            // valid: false — reflect the exact rejection message from backend
+            const message = (result && result.message) || "License is not active.";
+            const label   = _statusLabel(result && result.status);
+
+            _setStatusBadge(
+                statusElement,
+                detailsElement,
+                dotElement,
+                statusBar,
+                false,
+                label,
+                message
+            );
+
+            return false;
+        }
+
+    } catch (err) {
+
+        console.error("License verification API error:", err);
+
+        _setStatusBadge(
+            statusElement,
+            detailsElement,
+            dotElement,
+            statusBar,
+            false,
+            "Verification failed",
+            "Could not reach LicenseFlow backend. Check your connection."
+        );
+
+        return false;
+    }
+}
+
+
+/* =====================================================
+   INTERNAL HELPERS
+   ===================================================== */
+
+function _statusLabel(apiStatus) {
+    const map = {
+        REVOKED:    "License revoked",
+        SUSPENDED:  "License suspended",
+        EXPIRED:    "License expired",
+        CANCELLED:  "Subscription cancelled",
+        NOT_FOUND:  "License not found"
+    };
+    return map[apiStatus] || "License invalid";
+}
+
+function _setStatusBadge(
+    statusEl,
+    detailsEl,
+    dotEl,
+    barEl,
+    isValid,
+    label,
+    detail
+) {
+    statusEl.textContent  = label;
+    detailsEl.textContent = detail;
+
+    const color     = isValid ? "#25d695" : "#ff596d";
+    const shadow    = isValid ? "0 0 10px #25d695" : "0 0 10px #ff596d";
+    const barBorder = isValid
+        ? "rgba(37,214,149,.15)"
+        : "rgba(255,89,109,.15)";
+    const barBg     = isValid
+        ? "rgba(37,214,149,.035)"
+        : "rgba(255,89,109,.035)";
+
+    if (dotEl) {
+        dotEl.style.background = color;
+        dotEl.style.boxShadow  = shadow;
+    }
+
+    if (barEl) {
+        barEl.style.borderColor = barBorder;
+        barEl.style.background  = barBg;
+    }
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+function logoutLicenseFlow() {
+
+    if (typeof clearTokens === "function") {
+        clearTokens();
+    } else {
+        localStorage.removeItem("licenseflow_access_token");
+        localStorage.removeItem("licenseflow_refresh_token");
+        localStorage.removeItem("licenseflow_user");
+        localStorage.removeItem("licenseflow_logged_in");
+        localStorage.removeItem("licenseflow_role");
+    }
+
+    window.location.href = "index.html";
+}
+
+
+/* =====================================================
+   TASKFLOW INTERACTIONS
+===================================================== */
+
+
+    function taskMessage(section) {
+
+        alert(
+            section +
+            "\n\nThis TaskFlow module is ready for backend integration."
+        );
+
+    }
+
+
+    function openTaskModal() {
+
+        document
+            .getElementById("taskModal")
+            .classList.add("show");
+
+    }
+
+
+    function closeTaskModal() {
+
+        document
+            .getElementById("taskModal")
+            .classList.remove("show");
+
+    }
+
+
+    function createTask() {
+
+        const title =
+            document.getElementById("taskTitle").value;
+
+        const project =
+            document.getElementById("taskProject").value;
+
+
+        if (!title) {
+
+            alert("Please enter a task title.");
+
+            return;
+
+        }
+
+
+        alert(
+            "Task created successfully!\n\n" +
+            "Task: " + title +
+            "\nProject: " +
+            (project || "General")
+        );
+
+
+        document.getElementById("taskTitle").value = "";
+
+        document.getElementById("taskProject").value = "";
+
+        closeTaskModal();
+
+    }
+
+
+    function completeTask(element) {
+
+        element.classList.toggle("done");
+
+        if (element.classList.contains("done")) {
+
+            element.innerHTML = "✓";
+
+        } else {
+
+            element.innerHTML = "";
+
+        }
+
+    }
+
+
+    function searchTasks(value) {
+
+        if (!value) return;
+
+        const tasks =
+            document.querySelectorAll(".task");
+
+        tasks.forEach(function(task) {
+
+            const text =
+                task.innerText.toLowerCase();
+
+            task.style.display =
+                text.includes(value.toLowerCase())
+                    ? "flex"
+                    : "none";
+
+        });
+
+    }
+
+
+    document
+        .getElementById("taskModal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+
+                closeTaskModal();
+
+            }
+
+        });
+
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                closeTaskModal();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   INIT — run on page load
+   ===================================================== */
+
+loadUserGreeting();
+validateTaskFlowLicense();</script>
+
+</body>
+</html>
